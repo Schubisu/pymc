@@ -68,7 +68,7 @@ class PyMC():
             self.track_number = int(pymcdata[TRACK_NUMBER])
             self.playlist_repeat = int(pymcdata[PLAYLIST_REPEAT])
             self.playlist_shuffle = int(pymcdata[PLAYLIST_SHUFFLE])
-            self.track_time = int(pymcdata[TRACK_TIME_MSB * 100]) + int(pymcdata[TRACK_TIME_LSB])
+            self.track_time = int(pymcdata[TRACK_TIME_MSB] * 100) + int(pymcdata[TRACK_TIME_LSB])
 
     def write_pymc(self):
         pymcdata = [0] * 16
