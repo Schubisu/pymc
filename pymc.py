@@ -139,8 +139,9 @@ class PyMC():
         try:
             with open(PLAYLIST_PATH, 'r') as _in:
                 self.playlists = json.load(_in)
-        except:
+        except Exception as e:
             print('could not open playlists file')
+            print(e)
             print('creating new one')
             self.playlists = dict()
             self.write_playlists()
@@ -149,8 +150,9 @@ class PyMC():
         try:
             with open(PLAYLIST_PATH, 'w') as _out:
                 self.playlists = json.dump(_out, self.playlists)
-        except:
+        except Exception as e:
             print('could not write playlists file')
+            print(e)
 
     def create_playlist(self, playlistname):
         status, uid = self.authenticate(PYMC_BLOCK)
