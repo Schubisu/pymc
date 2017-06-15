@@ -77,7 +77,7 @@ class PyMC():
             pymcdata = [0] * 16
             # pymcdata[PLAYLIST_NUMBER] = self.playlist_number
             pymcdata[TRACK_NUMBER] = self.track_number
-            pymcdata[PlAYLIST_REPEAT] = self.playlist_repeat
+            pymcdata[PLAYLIST_REPEAT] = self.playlist_repeat
             pymcdata[PLAYLIST_SHUFFLE] = self.playlist_shuffle
             self.write_block(PYMC_BLOCK, pymcdata)
             GPIO.cleanup()
