@@ -111,10 +111,11 @@ class PyMC():
             if not self.uid in self.playlists.keys():
                 self.mpd_to_card()
             self.mpd.load(self.playlists[self.uid])
-            self.mpd.play(self.track_number)
-
+            track_number = self.track_number
         else:
-            self.mpd.play()
+            track_number = 0
+
+        self.mpd.play(track_number)
 
     def stop_playback(self):
         self.connect_mpd()
