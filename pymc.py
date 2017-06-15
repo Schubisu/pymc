@@ -102,7 +102,7 @@ class PyMC():
         self.mpd.load(self.playlists[self.uid])
         self.mpd.play(self.track_number)
         if self.track_time > 0:
-            self.mpd.seek(self.track_time)
+            self.mpd.seek(self.track_number, self.track_time)
 
     def stop_playback(self):
         self.connect_mpd()
