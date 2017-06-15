@@ -138,6 +138,9 @@ class PyMC():
                 self.playlists = json.load(_in)
         except:
             print('could not open playlists file')
+            print('creating new one')
+            self.playlists = dict()
+            self.write_playlists()
 
     def write_playlists(self):
         try:
@@ -148,7 +151,7 @@ class PyMC():
 
     def create_playlist(self, playlistname):
         status, uid = self.authenticate(PYMC_BLOCK)
-        if status == self.MIFAREReader.MF_OK:
+        if status == self.MIFAREReader.MI_OK:
             self.connect_mpd()
             self.mpd.save(playlistname)
             self.playlists[str(uid)] = playlistname
