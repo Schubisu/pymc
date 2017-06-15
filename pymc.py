@@ -140,3 +140,13 @@ class PyMC():
                 self.playlists = json.dump(_out, self.playlists)
         except:
             print('could not write playlists file')
+
+    def create_playlist(playlistname):
+        status, uid = self.authenticate()
+        if status == self.MIFAREReader.MF_OK:
+            self.connect_mpd()
+            self.mpd.save(playlistname)
+            self.playlists[str(uid)] = playlistname
+            self.mpd_to_card()
+        else:
+            print("authentication failed")
