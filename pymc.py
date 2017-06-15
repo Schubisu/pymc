@@ -72,9 +72,9 @@ class PyMC():
 
     def write_pymc(self):
         pymcdata = [0] * 16
-        pymcdata[TRACK_NUMBER] = self.track_number
-        pymcdata[PLAYLIST_REPEAT] = self.playlist_repeat
-        pymcdata[PLAYLIST_SHUFFLE] = self.playlist_shuffle
+        pymcdata[TRACK_NUMBER] = int(self.track_number)
+        pymcdata[PLAYLIST_REPEAT] = int(self.playlist_repeat)
+        pymcdata[PLAYLIST_SHUFFLE] = int(self.playlist_shuffle)
         self.write_block(PYMC_BLOCK, pymcdata)
 
     def connect_mpd(self):
