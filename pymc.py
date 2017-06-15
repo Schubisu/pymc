@@ -64,6 +64,7 @@ class PyMC():
     def read_pymc(self):
         (status, uid) = self.authenticate(PYMC_BLOCK)
         if status == self.MIFAREReader.MI_OK:
+            self.uid = str(uid)
             pymcdata = self.read_block(PYMC_BLOCK)
             GPIO.cleanup()
             if not pymcdata == 1:
@@ -100,7 +101,6 @@ class PyMC():
     def start_playback(self):
         self.connect_mpd()
         self.read_pymc()
-        self.uid = str(uid)
         self.mpd.load(self.playlists[self.uid])
         self.mpd.play(self.track_number)
 
