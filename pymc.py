@@ -66,7 +66,7 @@ class PyMC():
             pymcdata = self.read_block(PYMC_BLOCK)
             GPIO.cleanup()
             if not pymcdata == 1:
-                self.playlist_number = pymcdata[PLAYLIST_NUMBER]
+                # self.playlist_number = pymcdata[PLAYLIST_NUMBER]
                 self.track_number = pymcdata[TRACK_NUMBER]
                 self.playlist_repeat = pymcdata[PlAYLIST_REPEAT]
                 self.playlist_shuffle = pymcdata[PLAYLIST_SHUFFLE]
@@ -75,7 +75,7 @@ class PyMC():
         (status, uid) = self.authenticate(PYMC_BLOCK)
         if status == self.MIFAREReader.MI_OK:
             pymcdata = [0] * 16
-            pymcdata[PLAYLIST_NUMBER] = self.playlist_number
+            # pymcdata[PLAYLIST_NUMBER] = self.playlist_number
             pymcdata[TRACK_NUMBER] = self.track_number
             pymcdata[PlAYLIST_REPEAT] = self.playlist_repeat
             pymcdata[PLAYLIST_SHUFFLE] = self.playlist_shuffle
@@ -155,8 +155,12 @@ class PyMC():
         status, uid = self.authenticate(PYMC_BLOCK)
         if status == self.MIFAREReader.MI_OK:
             self.connect_mpd()
-            self.mpd.save(playlistname)
+            try:
+                self.mpd.save(playlistname)
+            except:
+                pass
             self.playlists[str(uid)] = playlistname
             self.mpd_to_card()
+            self.write_playlists()
         else:
             print("authentication failed")
