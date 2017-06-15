@@ -68,12 +68,15 @@ class PyMC():
             self.track_number = int(pymcdata[TRACK_NUMBER])
             self.playlist_repeat = int(pymcdata[PLAYLIST_REPEAT])
             self.playlist_shuffle = int(pymcdata[PLAYLIST_SHUFFLE])
+            self.track_time = int(pymcdata[TRACK_TIME_MSB * 100]) + int(pymcdata[TRACK_TIME_LSB])
 
     def write_pymc(self):
         pymcdata = [0] * 16
         pymcdata[TRACK_NUMBER] = int(self.track_number)
         pymcdata[PLAYLIST_REPEAT] = int(self.playlist_repeat)
         pymcdata[PLAYLIST_SHUFFLE] = int(self.playlist_shuffle)
+        pymcdata[TRACK_TIME_MSB] = int(self.track_time / 100)
+        pymcdata[TRACK_TIME_LSB] = int(self.track_time % 100)
         self.write_block(PYMC_BLOCK, pymcdata)
 
     def connect_mpd(self):
@@ -98,11 +101,14 @@ class PyMC():
         self.mpd.clear()
         self.mpd.load(self.playlists[self.uid])
         self.mpd.play(self.track_number)
+        if self.track_time > 0:
+            self.mpd.seek(self.track_time)
 
     def stop_playback(self):
         self.connect_mpd()
-        self.mpd.stop()
+        self.mpd.pause()
         self.mpd_to_card()
+        self.mpd.stop()
 
     def mpd_to_card(self):
         self.connect_mpd()
@@ -112,6 +118,9 @@ class PyMC():
             self.playlist_repeat = mpd_status.get('repeat', 0)
             self.playlist_shuffle = mpd_status.get('random', 0)
             self.track_time = mpd_status.get('time', 0)
+            if self.track_time != 0:
+                # time is given in 'seconds:miliseconds', convert to full seconds int
+                self.track_time = int(str(self.track_time.split(':')[0]))
             self.write_pymc()
 
     def read_playlists(self):
@@ -127,7 +136,7 @@ class PyMC():
     def write_playlists(self):
         try:
             with open(PLAYLIST_PATH, 'w') as _out:
-                self.playlists = json.dump(self.playlists, _out)
+                json.dump(self.playlists, _out)
         except Exception as e:
             print('could not write playlists file')
             print(e)
