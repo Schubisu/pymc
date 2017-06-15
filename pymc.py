@@ -7,7 +7,6 @@ import json
 # backstring = "".join([chr(c) for c in backdata]).replace(chr(0x00), "")
 
 
-
 class PyMC():
     def __init__(self):
         self.uid = None
@@ -29,11 +28,11 @@ class PyMC():
             else:
                 print("error: anticoll failed")
                 GPIO.cleanup()
-                return 1
+                return (1, None)
         else:
             print("error: no card detected")
             GPIO.cleanup()
-            return 1
+            return (1, None)
         return (status, uid)
 
     def read_block(self, blockid):
@@ -96,6 +95,7 @@ class PyMC():
     def start_playback(self):
         self.connect_mpd()
         self.read_pymc()
+        self.mpd.clear()
         self.mpd.load(self.playlists[self.uid])
         self.mpd.play(self.track_number)
 
