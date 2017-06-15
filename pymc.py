@@ -66,7 +66,7 @@ class PyMC():
         pymcdata = self.read_block(PYMC_BLOCK)
         if not pymcdata == 1:
             self.track_number = pymcdata[TRACK_NUMBER]
-            self.playlist_repeat = pymcdata[PlAYLIST_REPEAT]
+            self.playlist_repeat = pymcdata[PLAYLIST_REPEAT]
             self.playlist_shuffle = pymcdata[PLAYLIST_SHUFFLE]
 
     def write_pymc(self):
