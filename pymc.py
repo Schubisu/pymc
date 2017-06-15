@@ -12,12 +12,12 @@ class PyMC():
     def __init__(self):
         self.uid = None
         self.key = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-        self.MIFAREReader = MFRC522.MFRC522()
 
         self.mpd = MPDClient()
         self.read_playlists()
 
     def authenticate(self, blockid):
+        self.MIFAREReader = MFRC522.MFRC522()
         (status, TagType) = self.MIFAREReader.MFRC522_Request(self.MIFAREReader.PICC_REQIDL)
         if status == self.MIFAREReader.MI_OK:
             (status, uid) = self.MIFAREReader.MFRC522_Anticoll()
@@ -32,7 +32,6 @@ class PyMC():
             print("error: no card detected")
             GPIO.cleanup()
             return 1
-        GPIO.cleanup()
         return (status, uid)
 
     def read_block(self, blockid):
