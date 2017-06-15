@@ -138,7 +138,7 @@ class PyMC():
             self.mpd.save(playlistname)
         except:
             pass
-        self.playlists[str(uid)] = playlistname
         self.read_block(PYMC_BLOCK)
         self.mpd_to_card()
+        self.playlists[self.uid] = playlistname
         self.write_playlists()
