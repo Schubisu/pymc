@@ -26,10 +26,12 @@ class PyMC():
                 status = self.MIFAREReader.MFRC522_Auth(self.MIFAREReader.PICC_AUTHENT1A, blockid, self.key, uid)
             else:
                 print("error: anticoll failed")
+                GPIO.cleanup()
                 return 1
         else:
             print("error: no card detected")
             return 1
+        GPIO.cleanup()
         return (status, uid)
 
     def read_block(self, blockid):
@@ -144,7 +146,7 @@ class PyMC():
         except:
             print('could not write playlists file')
 
-    def create_playlist(playlistname):
+    def create_playlist(self, playlistname):
         status, uid = self.authenticate(PYMC_BLOCK)
         if status == self.MIFAREReader.MF_OK:
             self.connect_mpd()
