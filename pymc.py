@@ -146,6 +146,8 @@ class PyMC():
             print('creating new one')
             self.playlists = dict()
             self.write_playlists()
+        if not self.playlists:
+            self.playlists = dict()
 
     def write_playlists(self):
         try:
