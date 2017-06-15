@@ -17,6 +17,7 @@ class PyMC():
         self.read_playlists()
         self.track_number = 0
         self.track_time = 0
+        self.playlists = dict()
 
     def authenticate(self, blockid):
         self.MIFAREReader = MFRC522.MFRC522()
@@ -156,6 +157,7 @@ class PyMC():
 
     def create_playlist(self, playlistname):
         status, uid = self.authenticate(PYMC_BLOCK)
+        print(uid)
         if status == self.MIFAREReader.MI_OK:
             self.connect_mpd()
             try:
