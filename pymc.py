@@ -66,9 +66,9 @@ class PyMC():
     def read_pymc(self):
         pymcdata = self.read_block(PYMC_BLOCK)
         if not pymcdata == 1:
-            self.track_number = pymcdata[TRACK_NUMBER]
-            self.playlist_repeat = pymcdata[PLAYLIST_REPEAT]
-            self.playlist_shuffle = pymcdata[PLAYLIST_SHUFFLE]
+            self.track_number = int(pymcdata[TRACK_NUMBER])
+            self.playlist_repeat = int(pymcdata[PLAYLIST_REPEAT])
+            self.playlist_shuffle = int(pymcdata[PLAYLIST_SHUFFLE])
 
     def write_pymc(self):
         pymcdata = [0] * 16
@@ -139,5 +139,6 @@ class PyMC():
         except:
             pass
         self.playlists[str(uid)] = playlistname
+        self.read_block(PYMC_BLOCK)
         self.mpd_to_card()
         self.write_playlists()
