@@ -131,7 +131,7 @@ class PyMC():
             self.track_number = mpd_status['song']
             self.playlist_repeat = mpd_status['repeat']
             self.playlist_shuffle = mpd_status['random']
-            self.track_time = mpd_status['time']
+            # self.track_time = mpd_status['time']
             self.write_pymc()
 
     def read_playlists(self):
