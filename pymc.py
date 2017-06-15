@@ -30,6 +30,7 @@ class PyMC():
                 return 1
         else:
             print("error: no card detected")
+            GPIO.cleanup()
             return 1
         GPIO.cleanup()
         return (status, uid)
