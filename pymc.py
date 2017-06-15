@@ -149,7 +149,7 @@ class PyMC():
     def write_playlists(self):
         try:
             with open(PLAYLIST_PATH, 'w') as _out:
-                self.playlists = json.dump(_out, self.playlists)
+                self.playlists = json.dump(self.playlists, _out)
         except Exception as e:
             print('could not write playlists file')
             print(e)
