@@ -15,6 +15,8 @@ class PyMC():
 
         self.mpd = MPDClient()
         self.read_playlists()
+        self.track_number = 0
+        self.track_time = 0
 
     def authenticate(self, blockid):
         self.MIFAREReader = MFRC522.MFRC522()
@@ -124,7 +126,7 @@ class PyMC():
     def mpd_to_card(self):
         self.connect_mpd()
         mpd_status = self.mpd.status()
-        if status:
+        if mpd_status:
             # self.playlist_number
             self.track_number = mpd_status['song']
             self.playlist_repeat = mpd_status['repeat']
