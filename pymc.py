@@ -17,7 +17,6 @@ class PyMC():
         self.read_playlists()
         self.track_number = 0
         self.track_time = 0
-        self.playlists = dict()
 
     def authenticate(self, blockid):
         self.MIFAREReader = MFRC522.MFRC522()
@@ -38,8 +37,9 @@ class PyMC():
         return (status, uid)
 
     def read_block(self, blockid):
-        status = self.authenticate(blockid)
+        status, uid = self.authenticate(blockid)
         if status == self.MIFAREReader.MI_OK:
+            self.uid = str(uid)
             (blkid, data) = self.MIFAREReader.MFRC522_Read(blockid)
             self.MIFAREReader.MFRC522_StopCrypto1()
         else:
@@ -50,8 +50,9 @@ class PyMC():
         return data
 
     def write_block(self, blockid, content):
-        status = self.authenticate(blockid)
-        if status == self.MIFAREReader.MI_OK:
+        status, uid = self.authenticate(blockid)
+        # if status == self.MIFAREReader.MI_OK:
+        if str(uid) == self.uid:
             self.MIFAREReader.MFRC522_Write(blockid, content)
             self.MIFAREReader.MFRC522_StopCrypto1()
         else:
@@ -62,25 +63,18 @@ class PyMC():
         return 0
 
     def read_pymc(self):
-        (status, uid) = self.authenticate(PYMC_BLOCK)
-        if status == self.MIFAREReader.MI_OK:
-            self.uid = str(uid)
-            pymcdata = self.read_block(PYMC_BLOCK)
-            GPIO.cleanup()
-            if not pymcdata == 1:
-                self.track_number = pymcdata[TRACK_NUMBER]
-                self.playlist_repeat = pymcdata[PlAYLIST_REPEAT]
-                self.playlist_shuffle = pymcdata[PLAYLIST_SHUFFLE]
+        pymcdata = self.read_block(PYMC_BLOCK)
+        if not pymcdata == 1:
+            self.track_number = pymcdata[TRACK_NUMBER]
+            self.playlist_repeat = pymcdata[PlAYLIST_REPEAT]
+            self.playlist_shuffle = pymcdata[PLAYLIST_SHUFFLE]
 
     def write_pymc(self):
-        (status, uid) = self.authenticate(PYMC_BLOCK)
-        if status == self.MIFAREReader.MI_OK:
-            pymcdata = [0] * 16
-            pymcdata[TRACK_NUMBER] = self.track_number
-            pymcdata[PLAYLIST_REPEAT] = self.playlist_repeat
-            pymcdata[PLAYLIST_SHUFFLE] = self.playlist_shuffle
-            self.write_block(PYMC_BLOCK, pymcdata)
-            GPIO.cleanup()
+        pymcdata = [0] * 16
+        pymcdata[TRACK_NUMBER] = self.track_number
+        pymcdata[PLAYLIST_REPEAT] = self.playlist_repeat
+        pymcdata[PLAYLIST_SHUFFLE] = self.playlist_shuffle
+        self.write_block(PYMC_BLOCK, pymcdata)
 
     def connect_mpd(self):
         try:
