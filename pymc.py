@@ -78,8 +78,11 @@ class PyMC():
             self.write_block(PYMC_BLOCK, pymcdata)
             GPIO.cleanup()
 
-    def connect_mpd(self):
-        self.mpd.connect(MPD_IP, MPD_PORT)
+    def connect_mpd(self):rr
+        try:
+            self.mpd.connect(MPD_IP, MPD_PORT)
+        except:
+            pass
 
     def play_next(self):
         self.connect_mpd()
