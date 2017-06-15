@@ -52,6 +52,7 @@ class PyMC():
     def write_block(self, blockid, content):
         status, uid = self.authenticate(blockid)
         # if status == self.MIFAREReader.MI_OK:
+        print('writing block: {}'.format(content))
         if str(uid) == self.uid:
             self.MIFAREReader.MFRC522_Write(blockid, content)
             self.MIFAREReader.MFRC522_StopCrypto1()
