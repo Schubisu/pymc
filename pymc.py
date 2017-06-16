@@ -90,17 +90,17 @@ class PyMC():
         except ConnectionError:
             self.mpd.connect(MPD_IP, MPD_PORT)
 
-    def play_next(self):
+    def play_next(self, channel):
         self.connect_mpd()
         self.mpd.next()
         self.mpd_to_card()
 
-    def play_previous(self):
+    def play_previous(self, channel):
         self.connect_mpd()
         self.mpd.previous()
         self.mpd_to_card()
 
-    def start_playback(self):
+    def start_playback(self, channel):
         self.connect_mpd()
         self.read_pymc()
         self.mpd.clear()
@@ -109,7 +109,7 @@ class PyMC():
         if self.track_time > 0:
             self.mpd.seek(self.track_number, self.track_time)
 
-    def stop_playback(self):
+    def stop_playback(self, channel):
         self.connect_mpd()
         self.mpd.pause()
         self.mpd_to_card()
@@ -168,7 +168,7 @@ class PyMC():
         GPIO.setup(pins, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         for pin in pins:
             GPIO.add_event_detect(pin, GPIO.RISING)
-        GPIO.add_event_callback(BTN_PLAY, self.start_playback)
-        GPIO.add_event_callback(BTN_STOP, self.stop_playback)
-        GPIO.add_event_callback(BTN_PREVIOUS, self.play_previous)
-        GPIO.add_event_callback(BTN_NEXT, self.play_next)
+        GPIO.add_event_callback(BTN_PLAY, self.start_playback, bouncetime=200)
+        GPIO.add_event_callback(BTN_STOP, self.stop_playback, bouncetime=200)
+        GPIO.add_event_callback(BTN_PREVIOUS, self.play_previous, bouncetime=200)
+        GPIO.add_event_callback(BTN_NEXT, self.play_next, bouncetime=200)
