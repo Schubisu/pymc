@@ -3,6 +3,7 @@ from mpd import MPDClient, ConnectionError
 import RPi.GPIO as GPIO
 import MFRC522
 import json
+import time
 
 # backstring = "".join([chr(c) for c in backdata]).replace(chr(0x00), "")
 
@@ -182,4 +183,4 @@ class PyMC():
 if __name__ == "__main__":
     p = PyMC()
     while True:
-        sleep(10)
+        time.sleep(10)
