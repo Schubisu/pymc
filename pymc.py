@@ -158,6 +158,7 @@ class PyMC():
         self.write_playlists()
 
     def configure_gpio(self):
+        GPIO.setmode(GPIO.BOARD)
         pins = [
             BTN_PLAY,
             BTN_NEXT,
