@@ -166,7 +166,8 @@ class PyMC():
             BTN_STOP,
         ]
         GPIO.setup(pins, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.add_event_detect(pins, GPIO.RISING)
+        for pin in pins:
+            GPIO.add_event_detect(pin, GPIO.RISING)
         GPIO.add_event_callback(BTN_PLAY, self.start_playback)
         GPIO.add_event_callback(BTN_STOP, self.stop_playback)
         GPIO.add_event_callback(BTN_PREVIOUS, self.play_previous)
