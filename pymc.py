@@ -10,12 +10,19 @@ import json
 class PyMC():
     def __init__(self):
         self.uid = None
-        self.key = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
+        # configure mpd
         self.mpd = MPDClient()
+        self.connect_mpd()
+        self.stop_playback()
+        self.mpd.setvol(100)
+
+        # init playlist settings
         self.read_playlists()
         self.track_number = 0
         self.track_time = 0
+
+        # configure gpio
         self.configure_gpio()
 
     def authenticate(self, blockid):
@@ -25,7 +32,7 @@ class PyMC():
             (status, uid) = self.MIFAREReader.MFRC522_Anticoll()
             if status == self.MIFAREReader.MI_OK:
                 self.MIFAREReader.MFRC522_SelectTag(uid)
-                status = self.MIFAREReader.MFRC522_Auth(self.MIFAREReader.PICC_AUTHENT1A, blockid, self.key, uid)
+                status = self.MIFAREReader.MFRC522_Auth(self.MIFAREReader.PICC_AUTHENT1A, blockid, PYMC_KEY, uid)
             else:
                 print("error: anticoll failed")
                 # GPIO.cleanup()
@@ -170,3 +177,7 @@ class PyMC():
         GPIO.add_event_detect(BTN_STOP, GPIO.RISING, callback=self.stop_playback, bouncetime=200)
         GPIO.add_event_detect(BTN_PREVIOUS, GPIO.RISING, callback=self.play_previous, bouncetime=200)
         GPIO.add_event_detect(BTN_NEXT, GPIO.RISING, callback=self.play_next, bouncetime=200)
+
+
+if __name__ == "__main__":
+    p = PyMC()

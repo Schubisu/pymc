@@ -4,6 +4,7 @@ MPD_IP = "localhost"
 
 # block to read and write from MIFARE card
 PYMC_BLOCK = 4
+PYMC_KEY = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
 # sectors in block for specific mpd data
 # PLAYLIST_NUMBER = 0
