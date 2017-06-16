@@ -27,11 +27,11 @@ class PyMC():
                 status = self.MIFAREReader.MFRC522_Auth(self.MIFAREReader.PICC_AUTHENT1A, blockid, self.key, uid)
             else:
                 print("error: anticoll failed")
-                GPIO.cleanup()
+                # GPIO.cleanup()
                 return (1, None)
         else:
             print("error: no card detected")
-            GPIO.cleanup()
+            # GPIO.cleanup()
             return (1, None)
         return (status, uid)
 
@@ -43,9 +43,9 @@ class PyMC():
             self.MIFAREReader.MFRC522_StopCrypto1()
         else:
             print("Authentication error")
-            GPIO.cleanup()
+            # GPIO.cleanup()
             return 1
-        GPIO.cleanup()
+        # GPIO.cleanup()
         return data
 
     def write_block(self, blockid, content):
@@ -57,9 +57,9 @@ class PyMC():
             self.MIFAREReader.MFRC522_StopCrypto1()
         else:
             print("Authentication error")
-            GPIO.cleanup()
+            # GPIO.cleanup()
             return 1
-        GPIO.cleanup()
+        # GPIO.cleanup()
         return 0
 
     def read_pymc(self):
