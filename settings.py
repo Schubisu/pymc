@@ -1,3 +1,7 @@
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # mpd connection settings
 MPD_PORT = 6600
 MPD_IP = "localhost"
@@ -15,7 +19,7 @@ TRACK_TIME_MSB = 4
 TRACK_TIME_LSB = 5
 
 # where to store the {uid: playlist} dict
-PLAYLIST_PATH = 'playlists.json'
+PLAYLIST_PATH = os.path.join(BASE_DIR, 'playlists.json')
 
 # gpio pins for push buttons
 BTN_PLAY = 7
