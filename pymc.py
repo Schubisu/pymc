@@ -181,3 +181,5 @@ class PyMC():
 
 if __name__ == "__main__":
     p = PyMC()
+    while True:
+        sleep(10)
