@@ -1,5 +1,5 @@
 from settings import *
-from mpd import MPDClient
+from mpd import MPDClient, ConnectionError
 import RPi.GPIO as GPIO
 import MFRC522
 import json
@@ -16,6 +16,7 @@ class PyMC():
         self.read_playlists()
         self.track_number = 0
         self.track_time = 0
+        self.configure_gpio()
 
     def authenticate(self, blockid):
         self.MIFAREReader = MFRC522.MFRC522()
@@ -80,10 +81,14 @@ class PyMC():
         self.write_block(PYMC_BLOCK, pymcdata)
 
     def connect_mpd(self):
+        """
+        test for mpd connection. If connection is lost, ping
+        results in ConnectionError, client attempts to re-connect
+        """
         try:
+            self.mpd.ping()
+        except ConnectionError:
             self.mpd.connect(MPD_IP, MPD_PORT)
-        except:
-            pass
 
     def play_next(self):
         self.connect_mpd()
@@ -151,3 +156,17 @@ class PyMC():
         self.mpd_to_card()
         self.playlists[self.uid] = playlistname
         self.write_playlists()
+
+    def configure_gpio(self):
+        pins = [
+            BTN_PLAY,
+            BTN_NEXT,
+            BTN_PREVIOUS,
+            BTN_STOP,
+        ]
+        GPIO.setup(pins, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.add_event_detect(pins, GPIO.RISING)
+        GPIO.add_event_callback(BTN_PLAY, self.start_playback)
+        GPIO.add_event_callback(BTN_STOP, self.stop_playback)
+        GPIO.add_event_callback(BTN_PREVIOUS, self.play_previous)
+        GPIO.add_event_callback(BTN_NEXT, self.play_next)
