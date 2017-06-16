@@ -14,7 +14,7 @@ class PyMC():
         # configure mpd
         self.mpd = MPDClient()
         self.connect_mpd()
-        self.stop_playback(None)
+        self.mpd.stop()
         self.mpd.setvol(100)
 
         # init playlist settings
