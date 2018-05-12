@@ -182,5 +182,7 @@ class PyMC():
 
 if __name__ == "__main__":
     p = PyMC()
+    p.mpd.load('startup')
+    p.start_playback()
     while True:
         time.sleep(10)
